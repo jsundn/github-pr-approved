@@ -6,66 +6,16 @@
 :root {
   --gha-green: #1a7f37;
   --gha-green-light: #2da44e;
-  --gha-green-glow: rgba(45, 164, 78, 0.35);
   --gha-green-bg: #dafbe1;
+  --gha-green-bg-mid: #b6f0c5;
   --gha-green-border: #82e09a;
-  --gha-pulse-1: rgba(45, 164, 78, 0.6);
-  --gha-pulse-2: rgba(45, 164, 78, 0);
 }
 
 /* ── Keyframes ──────────────────────────────────────────────────────────── */
 
-@keyframes gha-shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-@keyframes gha-pulse-ring {
-  0% { box-shadow: 0 0 0 0 var(--gha-pulse-1); }
-  70% { box-shadow: 0 0 0 10px var(--gha-pulse-2); }
-  100% { box-shadow: 0 0 0 0 var(--gha-pulse-2); }
-}
-
-@keyframes gha-checkmark-pop {
-  0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
-  60%  { transform: scale(1.3) rotate(5deg);  opacity: 1; }
-  100% { transform: scale(1)   rotate(0deg);  opacity: 1; }
-}
-
-@keyframes gha-badge-entrance {
-  0%   { transform: scale(0.6) translateY(-4px); opacity: 0; }
-  70%  { transform: scale(1.08) translateY(1px); opacity: 1; }
-  100% { transform: scale(1) translateY(0);      opacity: 1; }
-}
-
-@keyframes gha-row-glow {
-  0%   { box-shadow: inset 4px 0 0 var(--gha-green-light); }
-  50%  { box-shadow: inset 4px 0 0 var(--gha-green-light), 0 0 16px var(--gha-green-glow); }
-  100% { box-shadow: inset 4px 0 0 var(--gha-green-light); }
-}
-
-/* ── Approved PR Title (PR detail page) ─────────────────────────────────── */
-
-.gha-approved-title {
-  position: relative;
-  color: var(--gha-green) !important;
-  text-shadow: 0 0 20px var(--gha-green-glow);
-}
-
-.gha-approved-title::after {
-  content: " ✓";
-  color: var(--gha-green-light);
-  font-size: 0.75em;
-  vertical-align: super;
-}
-
-/* ── Merge Box highlight (PR detail page) ───────────────────────────────── */
-
-.gha-approved-merge-box {
-  border: 2px solid var(--gha-green-border) !important;
-  border-radius: 8px;
-  box-shadow: 0 0 20px var(--gha-green-glow);
-  animation: gha-pulse-ring 2s ease-out infinite;
+@keyframes gha-bg-pulse {
+  0%, 100% { background-color: var(--gha-green-bg); }
+  50%       { background-color: var(--gha-green-bg-mid); }
 }
 
 /* ── PR List Row highlight ───────────────────────────────────────────────── */
@@ -91,32 +41,9 @@
   font-weight: 700;
 }
 
-
-/* ── Inline "Approved" label enhancement ────────────────────────────────── */
-
-.gha-inline-approved {
-  display: inline-flex !important;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 10px !important;
-  background: var(--gha-green) !important;
-  color: #ffffff !important;
-  border-radius: 20px !important;
-  font-weight: 700 !important;
-  font-size: 12px !important;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  box-shadow: 0 0 10px var(--gha-green-glow),
-              0 2px 4px rgba(0,0,0,0.15);
-  animation: gha-pulse-ring 2.5s ease-out infinite;
-  border: none !important;
-  outline: none;
-}
-
-.gha-inline-approved::before {
-  content: "✓";
-  font-weight: 900;
-  animation: gha-checkmark-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+/* Animated subtle pulse for rows with more than 1 approval */
+.gha-approved-row-pulse {
+  animation: gha-bg-pulse 2.5s ease-in-out infinite !important;
 }
 
 /* ── Dark mode adjustments ──────────────────────────────────────────────── */
@@ -124,6 +51,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --gha-green-bg: rgba(45, 164, 78, 0.12);
+    --gha-green-bg-mid: rgba(45, 164, 78, 0.22);
     --gha-green-border: #2da44e;
   }
 }
@@ -131,5 +59,6 @@
 [data-color-mode="dark"],
 [data-color-mode="auto"][data-dark-theme] {
   --gha-green-bg: rgba(45, 164, 78, 0.12) !important;
+  --gha-green-bg-mid: rgba(45, 164, 78, 0.22) !important;
   --gha-green-border: #2da44e !important;
 }
