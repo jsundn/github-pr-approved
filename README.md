@@ -1,3 +1,5 @@
+![GitHub PR Approved](https://github.com/user-attachments/assets/2236e1a8-b914-4615-a107-b4200a6d87b0)
+
 # GitHub PR Approval Highlighter
 
 A Chrome extension that makes approved Pull Requests visually unmistakable on GitHub.
