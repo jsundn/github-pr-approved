@@ -82,27 +82,6 @@
     if (document.body.dataset.ghaApproved) return;
     document.body.dataset.ghaApproved = 'true';
 
-    // Inject the banner
-    const existing = document.getElementById('gha-approval-banner');
-    if (existing) return;
-
-    const banner = document.createElement('div');
-    banner.id = 'gha-approval-banner';
-    banner.innerHTML = `
-      <div class="gha-banner-inner">
-        <span class="gha-banner-icon">✓</span>
-        <span class="gha-banner-label">Pull Request Approved</span>
-      </div>
-    `;
-
-    // Insert at top of main content
-    const main = document.querySelector('#js-repo-pjax-container, #repo-content-pjax-container, main, .application-main');
-    if (main) {
-      main.insertBefore(banner, main.firstChild);
-    } else {
-      document.body.insertBefore(banner, document.body.firstChild);
-    }
-
     // Highlight the PR title
     const prTitle = document.querySelector('.js-issue-title, [class*="title"] .markdown-title, h1 bdi');
     if (prTitle) {
@@ -168,14 +147,8 @@
   });
 
   // Also run on popstate (GitHub SPA navigation)
-  function removeBanner() {
-    const banner = document.getElementById('gha-approval-banner');
-    if (banner) banner.remove();
-    delete document.body.dataset.ghaApproved;
-  }
-
-  window.addEventListener('popstate', () => { removeBanner(); setTimeout(run, 300); });
-  document.addEventListener('turbo:load', () => { removeBanner(); setTimeout(run, 300); });
-  document.addEventListener('pjax:end', () => { removeBanner(); setTimeout(run, 300); });
+  window.addEventListener('popstate', () => { delete document.body.dataset.ghaApproved; setTimeout(run, 300); });
+  document.addEventListener('turbo:load', () => { delete document.body.dataset.ghaApproved; setTimeout(run, 300); });
+  document.addEventListener('pjax:end', () => { delete document.body.dataset.ghaApproved; setTimeout(run, 300); });
 
 })();
