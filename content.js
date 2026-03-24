@@ -33,27 +33,20 @@
   // ─── PR Detail Page (github.com/*/pull/*) ───────────────────────────────────
 
   function tagPRDetailPage() {
-    // Check the merge/review status box at the top
-    const reviewSummary = document.querySelector(
-      '[data-testid="reviews-summary"], .merge-status-item, #reviews-section, .branch-action-item'
-    );
-
-    // Check sidebar review items
-    const sidebarReviews = document.querySelectorAll(
-      '.review-status-item, [class*="ReviewItem"], [data-testid*="review"]'
-    );
-
-    // Check the main review event timeline
-    const reviewEvents = document.querySelectorAll(
-      '.TimelineItem--condensed, .js-timeline-item'
-    );
+    // Check MergeBoxSectionHeader elements for approval (e.g. aria-label="1 approval")
+    const mergeBoxHeaders = document.querySelectorAll('[class*="MergeBoxSectionHeader"]');
+    let pageApproved = Array.from(mergeBoxHeaders).some(el => {
+      const label = el.getAttribute('aria-label');
+      return label && label.toLowerCase().includes('approved');
+    });
 
     // Check all text content for approval signals
-    const approvalNodes = document.querySelectorAll(
-      '[class*="approved" i], [data-state="approved"], [aria-label*="approved" i], [title*="approved" i]'
-    );
-
-    let pageApproved = approvalNodes.length > 0;
+    if (!pageApproved) {
+      const approvalNodes = document.querySelectorAll(
+        '[class*="approved" i], [data-state="approved"], [aria-label*="approved" i], [title*="approved" i]'
+      );
+      pageApproved = approvalNodes.length > 0;
+    }
 
     // Also scan review event headings
     if (!pageApproved) {
