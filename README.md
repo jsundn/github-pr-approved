@@ -15,7 +15,7 @@ A Chrome extension that makes approved Pull Requests visually unmistakable on th
 1. Open Chrome and go to `chrome://extensions/`
 2. Enable **Developer mode** (top right toggle)
 3. Click **Load unpacked**
-4. Select this folder (`gh-pr-approved/`)
+4. Select this folder (`github-pr-approval-highlighter/`)
 5. Navigate to any GitHub PR list page
 
 ## How it works
