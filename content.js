@@ -22,9 +22,9 @@
 
       row.dataset.approvalTagged = 'true';
 
-      // Parse the approval count from aria-label (e.g. "2 review approvals")
+      // Parse the approval count from aria-label (e.g. "2 review approval")
       const label = (approvedEl.getAttribute('aria-label') || '').toLowerCase();
-      const match = label.match(/^(\d+)\s+review\s+approvals?/);
+      const match = label.match(/^(\d+)\s+review\s+approval/);
       const count = match ? parseInt(match[1], 10) : 1;
 
       if (count > 1) {
