@@ -2,13 +2,12 @@
 
 # GitHub PR Approval Highlighter
 
-A Chrome extension that makes approved Pull Requests visually unmistakable on GitHub.
+A Chrome extension that makes approved Pull Requests visually unmistakable on the GitHub PR list page.
 
 ## Features
 
 - **PR List page**: Approved PRs get a green background highlight and a left border accent; the approval count link gains a ✓ prefix
-- **PR Detail page**: The PR title turns green with a ✓ suffix and the merge box glows with a pulsing green border
-- **Inline labels**: Any "Approved" or "Changes approved" text label is transformed into a bold green pill badge with pulsing animation
+- **Multi-approval pulse**: PRs with 2 or more approvals get an additional pulsing background animation to stand out even more
 - Works in both light and dark mode
 
 ## Installation
@@ -17,21 +16,14 @@ A Chrome extension that makes approved Pull Requests visually unmistakable on Gi
 2. Enable **Developer mode** (top right toggle)
 3. Click **Load unpacked**
 4. Select this folder (`gh-pr-approved/`)
-5. Navigate to any GitHub PR list or PR detail page
+5. Navigate to any GitHub PR list page
 
 ## How it works
 
-The extension injects a content script that watches GitHub pages for approval signals:
+The extension injects a content script that runs on the GitHub PR list page (`/pulls`):
 
-**PR List page** (`/pulls`):
-- Scans PR rows for elements whose `aria-label` contains "approval" (e.g. "1 review approval")
-
-**PR Detail page** (`/pull/*`):
-- Checks `MergeBoxSectionHeader` elements with an `aria-label` containing "approved"
-- Checks `[data-state="approved"]`, `[class*="approved"]`, `[aria-label*="approved"]`, `[title*="approved"]`
-- Scans review timeline items, the PR header area, and the reviewers sidebar for approval signals
-
-**Inline labels** (both pages):
-- Finds any element whose visible text is exactly "Approved" or "Changes approved" and styles it as a green badge
+- For each PR row, it looks for a `.tooltipped` element whose `aria-label` contains "approval" and whose visible text contains "approved" (e.g. "1 review approval")
+- Matching rows get a green background and left border accent, with a ✓ prefix added to the approval count link
+- Rows with 2 or more approvals also get a subtle pulsing background animation
 
 A `MutationObserver` keeps watching for GitHub's dynamic page updates (SPA navigation).
