@@ -25,3 +25,9 @@ The extension injects a content script that watches GitHub pages for approval si
 - Text content matching "Approved" / "Changes approved"
 
 A `MutationObserver` keeps watching for GitHub's dynamic page updates (SPA navigation).
+
+## Browser Compatibility
+
+- **Chrome** (recommended) — full support via Manifest V3
+- **Edge** — compatible (Chromium-based)
+- **Firefox** — not currently supported (uses Manifest V3 format)
