@@ -7,7 +7,7 @@ A Chrome extension that makes approved Pull Requests visually unmistakable on Gi
 ## Features
 
 - **PR List page**: Approved PRs get a green left-border glow + pulsing "✓ APPROVED" badge next to the title
-- **PR Detail page**: A full-width animated green banner slides in at the top, the PR title turns green with a ✓, and the merge box glows
+- **PR Detail page**: The PR title turns green with a ✓ and the merge box glows
 - **Inline labels**: Any "Approved" text label is transformed into a bold green pill badge with pulsing animation
 - Works in both light and dark mode
 
