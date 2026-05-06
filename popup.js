@@ -5,20 +5,24 @@ const DEFAULT_SETTINGS = {
   highlightDraft: true,
 };
 
-const approvedCheckbox = document.getElementById('highlightApproved');
-const draftCheckbox    = document.getElementById('highlightDraft');
+document.addEventListener('DOMContentLoaded', () => {
+  const approvedCheckbox = document.getElementById('highlightApproved');
+  const draftCheckbox    = document.getElementById('highlightDraft');
 
-// Populate checkboxes from stored settings
-chrome.storage.sync.get(DEFAULT_SETTINGS, settings => {
-  approvedCheckbox.checked = settings.highlightApproved;
-  draftCheckbox.checked    = settings.highlightDraft;
-});
+  if (!approvedCheckbox || !draftCheckbox) return;
 
-// Persist changes immediately on toggle
-approvedCheckbox.addEventListener('change', () => {
-  chrome.storage.sync.set({ highlightApproved: approvedCheckbox.checked });
-});
+  // Populate checkboxes from stored settings
+  chrome.storage.sync.get(DEFAULT_SETTINGS, settings => {
+    approvedCheckbox.checked = settings.highlightApproved;
+    draftCheckbox.checked    = settings.highlightDraft;
+  });
 
-draftCheckbox.addEventListener('change', () => {
-  chrome.storage.sync.set({ highlightDraft: draftCheckbox.checked });
+  // Persist changes immediately on toggle
+  approvedCheckbox.addEventListener('change', () => {
+    chrome.storage.sync.set({ highlightApproved: approvedCheckbox.checked });
+  });
+
+  draftCheckbox.addEventListener('change', () => {
+    chrome.storage.sync.set({ highlightDraft: draftCheckbox.checked });
+  });
 });
