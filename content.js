@@ -53,9 +53,9 @@
     document.querySelectorAll('[id^="issue_"]').forEach(row => {
       if (row.dataset.draftTagged) return;
 
-      // Look for a .tooltipped element whose aria-label is exactly "Draft"
+      // Look for a .tooltipped element whose aria-label includes "Draft"
       const draftEl = Array.from(row.querySelectorAll('.tooltipped')).find(el => {
-        return el.getAttribute('aria-label') === 'Draft';
+        return el.getAttribute('aria-label')?.includes('Draft');
       });
 
       if (!draftEl) return;
