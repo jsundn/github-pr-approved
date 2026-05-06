@@ -14,6 +14,7 @@
   --gha-draft-bg-mid: #eaeef2;
   --gha-draft-border: #656d76;
   --gha-draft-text: #656d76;
+  --gha-draft-opacity: 0.6;
 }
 
 /* ── Keyframes ──────────────────────────────────────────────────────────── */
@@ -56,7 +57,7 @@
 .gha-draft-row {
   background-color: var(--gha-draft-bg) !important;
   border-left: 3px solid var(--gha-draft-border) !important;
-  opacity: 0.6;
+  opacity: var(--gha-draft-opacity);
 }
 
 /* The inner flex div needs the same bg so it doesn't bleed */
