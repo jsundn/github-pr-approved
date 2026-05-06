@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "GitHub PR Approval Highlighter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Makes approved PRs visually unmistakable on GitHub",
   "permissions": ["activeTab", "storage"],
   "action": {
