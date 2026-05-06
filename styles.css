@@ -9,6 +9,11 @@
   --gha-green-bg: #dafbe1;
   --gha-green-bg-mid: #b6f0c5;
   --gha-green-border: #82e09a;
+
+  --gha-draft-bg: #f6f8fa;
+  --gha-draft-bg-mid: #eaeef2;
+  --gha-draft-border: #656d76;
+  --gha-draft-text: #656d76;
 }
 
 /* ── Keyframes ──────────────────────────────────────────────────────────── */
@@ -46,6 +51,24 @@
   animation: gha-bg-pulse 2.5s ease-in-out infinite !important;
 }
 
+/* ── Draft PR Row highlight ─────────────────────────────────────────────── */
+
+.gha-draft-row {
+  background-color: var(--gha-draft-bg) !important;
+  border-left: 3px solid var(--gha-draft-border) !important;
+}
+
+/* The inner flex div needs the same bg so it doesn't bleed */
+.gha-draft-row > .d-flex {
+  background-color: transparent !important;
+}
+
+/* Style the "Draft" badge text to stand out */
+.gha-draft-row .tooltipped[aria-label="Draft"] {
+  color: var(--gha-draft-text) !important;
+  font-weight: 600 !important;
+}
+
 /* ── Dark mode adjustments ──────────────────────────────────────────────── */
 
 @media (prefers-color-scheme: dark) {
@@ -53,6 +76,11 @@
     --gha-green-bg: rgba(45, 164, 78, 0.12);
     --gha-green-bg-mid: rgba(45, 164, 78, 0.22);
     --gha-green-border: #2da44e;
+
+    --gha-draft-bg: rgba(101, 109, 118, 0.12);
+    --gha-draft-bg-mid: rgba(101, 109, 118, 0.22);
+    --gha-draft-border: #848d97;
+    --gha-draft-text: #848d97;
   }
 }
 
@@ -61,4 +89,9 @@
   --gha-green-bg: rgba(45, 164, 78, 0.12) !important;
   --gha-green-bg-mid: rgba(45, 164, 78, 0.22) !important;
   --gha-green-border: #2da44e !important;
+
+  --gha-draft-bg: rgba(101, 109, 118, 0.12) !important;
+  --gha-draft-bg-mid: rgba(101, 109, 118, 0.22) !important;
+  --gha-draft-border: #848d97 !important;
+  --gha-draft-text: #848d97 !important;
 }
