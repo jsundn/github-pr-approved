@@ -3,7 +3,10 @@
   "name": "GitHub PR Approval Highlighter",
   "version": "1.0.0",
   "description": "Makes approved PRs visually unmistakable on GitHub",
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "storage"],
+  "action": {
+    "default_popup": "popup.html"
+  },
   "content_scripts": [
     {
       "matches": ["https://github.com/*"],

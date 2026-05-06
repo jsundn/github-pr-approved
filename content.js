@@ -1,12 +1,19 @@
 // GitHub PR Approval Highlighter
-// Watches for approved PRs and makes them visually unmistakable
+// Watches for approved/draft PRs and makes them visually unmistakable
 
 (function () {
   'use strict';
 
+  const DEFAULT_SETTINGS = {
+    highlightApproved: true,
+    highlightDraft: true,
+  };
+
+  let settings = { ...DEFAULT_SETTINGS };
+
   // ─── PR List Page (github.com/*/pulls) ──────────────────────────────────────
 
-  function tagPRListItems() {
+  function tagApprovedRows() {
     document.querySelectorAll('[id^="issue_"]').forEach(row => {
       if (row.dataset.approvalTagged) return;
 
@@ -35,30 +42,78 @@
     });
   }
 
+  function untagApprovedRows() {
+    document.querySelectorAll('[id^="issue_"][data-approval-tagged]').forEach(row => {
+      row.classList.remove('gha-approved-row', 'gha-approved-row-pulse');
+      delete row.dataset.approvalTagged;
+    });
+  }
+
+  function tagDraftRows() {
+    document.querySelectorAll('[id^="issue_"]').forEach(row => {
+      if (row.dataset.draftTagged) return;
+
+      // Look for a .tooltipped element whose aria-label is exactly "Draft"
+      const draftEl = Array.from(row.querySelectorAll('.tooltipped')).find(el => {
+        return el.getAttribute('aria-label') === 'Draft';
+      });
+
+      if (!draftEl) return;
+
+      row.dataset.draftTagged = 'true';
+      row.classList.add('gha-draft-row');
+    });
+  }
+
+  function untagDraftRows() {
+    document.querySelectorAll('[id^="issue_"][data-draft-tagged]').forEach(row => {
+      row.classList.remove('gha-draft-row');
+      delete row.dataset.draftTagged;
+    });
+  }
+
   // ─── Runner ─────────────────────────────────────────────────────────────────
 
   function run() {
     if (/\/pulls/.test(window.location.pathname) || window.location.pathname === '/') {
-      tagPRListItems();
+      if (settings.highlightApproved) tagApprovedRows();
+      if (settings.highlightDraft)   tagDraftRows();
     }
   }
 
-  // Run on load
-  run();
+  function applySettings(newSettings) {
+    const prev = { ...settings };
+    settings = { ...DEFAULT_SETTINGS, ...newSettings };
 
-  // Watch for GitHub's pjax navigation and dynamic content
-  const observer = new MutationObserver(() => {
+    if (prev.highlightApproved && !settings.highlightApproved) untagApprovedRows();
+    if (prev.highlightDraft    && !settings.highlightDraft)    untagDraftRows();
+
+    run();
+  }
+
+  // ─── Persistent settings via chrome.storage.sync ────────────────────────────
+
+  chrome.storage.sync.get(DEFAULT_SETTINGS, stored => {
+    settings = stored;
     run();
   });
 
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== 'sync') return;
+    const updated = {};
+    for (const [key, { newValue }] of Object.entries(changes)) {
+      updated[key] = newValue;
+    }
+    applySettings({ ...settings, ...updated });
   });
 
-  // Also run on popstate (GitHub SPA navigation)
-  window.addEventListener('popstate', () => { setTimeout(run, 300); });
-  document.addEventListener('turbo:load', () => { setTimeout(run, 300); });
-  document.addEventListener('pjax:end', () => { setTimeout(run, 300); });
+  // ─── Watch for GitHub's pjax navigation and dynamic content ─────────────────
+
+  const observer = new MutationObserver(() => { run(); });
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  window.addEventListener('popstate',       () => { setTimeout(run, 300); });
+  document.addEventListener('turbo:load',   () => { setTimeout(run, 300); });
+  document.addEventListener('pjax:end',     () => { setTimeout(run, 300); });
 
 })();
